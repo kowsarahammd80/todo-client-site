@@ -1,0 +1,26 @@
+.registerForm-text-div{
+    background-color: blueviolet;
+    color: white;
+    font-size: 28px;
+    font-weight: 600;
+    width: 30%;
+    margin: auto;
+    border-radius: 10px;
+    text-align: center; 
+}
+
+
+@media only screen and (max-width: 1024px){
+    
+    .registerForm-text-div{
+        background-color: blueviolet;
+        color: white;
+        font-size: 20px;
+        font-weight: 600;
+        width: 50%;
+        margin: auto;
+        border-radius: 10px;
+        text-align: center; 
+    }
+
+}
