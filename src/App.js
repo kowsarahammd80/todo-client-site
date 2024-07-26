@@ -1,13 +1,16 @@
+import { RouterProvider } from 'react-router-dom';
 import './App.css';
-import RegisterForm from './components/RegisterForm/RegisterForm';
+import router from './Router/Routers/Routers';
 
 function App() {
 
   return (
 
-    <div className="mx-5 lg:mx-40 xl:mx-40 md:mx-10 my-10 lg:my-16 xl:my-16">
-        
-        <RegisterForm/>
+    <div className="bg-color">
+
+      <RouterProvider router={router}>
+           
+      </RouterProvider>
 
     </div>
 
