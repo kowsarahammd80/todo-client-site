@@ -1,0 +1,25 @@
+.pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 1rem;
+}
+#paiginationButtonId {
+    padding: 4px 12px;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 12px;
+    margin: 0 3px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: transparent;
+    color: black;
+    border: #101010 dotted 2px;
+}
+#paiginationButtonId.active {
+    font-weight: 600;
+    border-color: #101010;
+    background: #101010;
+    color: white;
+}

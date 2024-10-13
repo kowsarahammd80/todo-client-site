@@ -1,0 +1,20 @@
+tr:nth-child(odd) {
+    background-color: lightgray;
+  }
+  /* Even rows */
+  tr:nth-child(even) {
+    background-color: white;
+  }
+  .addNewButton{
+    border: rgb(34,117,252) 2px solid;
+    color: rgb(34,117,252);
+  }
+  .categoryEyeButton{
+    color: rgb(35,119,252);
+  }
+  .categoryPenButton{
+    color: rgb(34,197,94);
+  }
+  .categoryDeleteButton{
+    color: rgb(255,82,0);
+  }

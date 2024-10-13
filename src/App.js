@@ -1,19 +1,18 @@
-import { RouterProvider } from 'react-router-dom';
-import './App.css';
-import router from './Router/Routers/Routers';
+import { RouterProvider } from "react-router-dom";
+import "./App.css";
+import router from "./Router/Routers/Routers";
+import { Provider } from "react-redux";
+import store from "./app/store";
 
 function App() {
-
   return (
-
     <div className="bg-color">
-
-      <RouterProvider router={router}>
+      <Provider store={store}>
+        <RouterProvider router={router}>
            
-      </RouterProvider>
-
+        </RouterProvider>
+      </Provider>
     </div>
-
   );
 }
 

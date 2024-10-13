@@ -6,13 +6,13 @@ import './Manin.css'
 const Main = () => {
   return (
     <div className="">  
-      <div className="grid grid-cols-6 lg:grid-cols-6 xl:grid-cols-6 gap-0 ">
-      <div className="bg-white">
+      <div className="grid grid-cols-6 lg:grid-cols-6 xl:grid-cols-6 gap-0">
+      <div className="navbg">
           <Navbar/>
        </div>
         <div className="col-span-5">
          <div className="p-4">
-         <Outlet />
+          <Outlet />
          </div>
         </div>
       </div>
