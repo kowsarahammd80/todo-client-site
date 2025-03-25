@@ -154,7 +154,7 @@ const ProductsUp = () => {
       // console.log(dataToSend)
       // Post data to your backend
       await axios.post(`http://localhost:5000/api/products`, dataToSend);
-      console.log(dataToSend);
+      // console.log(dataToSend);
       setUploadStatus("Upload successful !");
       if (setUploadStatus) {
         // Show success toast
@@ -528,7 +528,7 @@ const ProductsUp = () => {
               </div>
               <div className="mb-4">
                 <p className="text-sm font-semibold mb-3">
-                  Offer Set <span className="text-orange-400">*</span>{" "}
+                  Hot Deal Set <span className="text-orange-400">*</span>{" "}
                 </p>
                 <div className="grid grid-cols-2 gap-4">
                   {/* <input
@@ -536,13 +536,26 @@ const ProductsUp = () => {
                     placeholder="Minimum pirce"
                     className="text-sm input input-bordered w-full"
                   /> */}
-                  <input
+                   <select
+                    name="offer"
+                    className="select select-bordered w-full "
+                    // value={formData.subCategoriesName}
+                    onChange={handleInputChange}
+                    
+                  >
+                    <option value="" >Select Deals</option>
+
+                    <option value="hot">Hot Deals</option>
+                    <option value="treanding">Trending deals</option>
+                  </select>
+
+                  {/* <input
                     type="Text"
                     name="offer"
                     placeholder="Only Type Here Offer (Offer)"
                     className="text-sm input input-bordered w-full"
                     onChange={handleInputChange}
-                  />
+                  /> */}
                   <input
                     type="text"
                     name="offerName"
@@ -570,6 +583,7 @@ const ProductsUp = () => {
                     className="text-sm input input-bordered w-full"
                     onChange={handleInputChange}
                   />
+                  
                   <input
                     type="text"
                     name="facebookLink"

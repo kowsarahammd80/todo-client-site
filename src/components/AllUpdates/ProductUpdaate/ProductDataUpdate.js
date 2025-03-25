@@ -21,7 +21,7 @@ const ProductDataUpdate = () => {
   const [text, setText] = useState("");
   const [previewUrls, setPreviewUrls] = useState([]);
   const [uploadStatus, setUploadStatus] = useState(null);
-  const [sizes, setSizes] = useState([])
+  const [sizes, setSizes] = useState([]);
   const [colors, setColors] = useState([{ colorName: "", colorCode: "" }]);
   const imageHostKey = process.env.REACT_APP_image_key;
 
@@ -31,20 +31,45 @@ const ProductDataUpdate = () => {
     name: "",
     brandName: "",
     price: "",
-    discountNumber: "", // Array of sizes
+    discountNumber: "",
     categoryName: "",
     categoryId: "",
     description: "",
     youtubeLink: "",
     facebookLink: "",
     offers: "",
-    offerNames: '',
-    subCategoryName: '',
-    subCategoryIdNum: '',
-    productShowStatus: '',
-    stockStatus: '',
-    colorsData: colors
+    offerNames: "",
+    subCategoryName: "",
+    subCategoryIdNum: "",
+    productShowStatus: "",
+    stockStatus: "",
+    colorsData: [],
+    images: [], // Store product images
   });
+  useEffect(() => {
+    if (idByProductData) {
+      setFormData((prev) => ({
+        ...prev,
+        name: idByProductData.name || "",
+        brandName: idByProductData.brandName || "",
+        price: idByProductData.price || "",
+        discountNumber: idByProductData.discountNumber || "",
+        categoryName: idByProductData.categoryName || "",
+        categoryId: idByProductData.categoryId || "",
+        description: idByProductData.description || "",
+        youtubeLink: idByProductData.youtubeLink || "",
+        facebookLink: idByProductData.facebookLink || "",
+        offers: idByProductData.offers || "",
+        offerNames: idByProductData.offerNames || "",
+        subCategoryName: idByProductData.subCategoryName || "",
+        subCategoryIdNum: idByProductData.subCategoryIdNum || "",
+        productShowStatus: idByProductData.productShowStatus || "",
+        stockStatus: idByProductData.stockStatus || "",
+        colorsData: idByProductData.colorsData || [],
+        images: idByProductData.images || [], // Existing images
+      }));
+    }
+  }, [idByProductData]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -59,8 +84,8 @@ const ProductDataUpdate = () => {
     setPreviewUrls(previews);
   };
 
-///size all function here 
- // Initialize sizes as an empty array
+  ///size all function here
+  // Initialize sizes as an empty array
 
   // Load sizes from the fetched product data when it is available
   useEffect(() => {
@@ -87,107 +112,73 @@ const ProductDataUpdate = () => {
     setSizes(updatedSizes);
   };
 
+  // Load colors from fetched product data when available
+  useEffect(() => {
+    if (idByProductData && idByProductData.colorsData) {
+      setColors(idByProductData.colorsData); // Set colors from product data
+    }
+  }, [idByProductData]);
 
-
-
-
-
-
-
-
-
-
-
-
-
+  // Function to handle changes in color input fields
   const handleColorInputChange = (index, event) => {
     const { name, value } = event.target;
     const updatedColors = [...colors];
-    updatedColors[index][name] = value;
+    updatedColors[index][name] = value; // Update the specific color field
     setColors(updatedColors);
   };
 
   // Function to add a new color input row
   const addColorField = () => {
-    setColors([...colors, { name: "", code: "" }]);
+    setColors([...colors, { colorName: "", colorCode: "" }]); // Add a new empty color object
   };
 
   // Function to remove a color input row
   const removeColorField = (index) => {
-    const updatedColors = colors.filter((_, i) => i !== index);
+    const updatedColors = colors.filter((_, i) => i !== index); // Filter out the specific color
     setColors(updatedColors);
   };
 
-  const handleUpload = async (event, _id) => {
+  const handleUpload = async (event) => {
     event.preventDefault();
-    const form = event.target;
     setUploadStatus("Uploading...");
-    const imageUrls = [];
+
+    let imageUrls = [...formData.images]; // Use existing images if no new images are uploaded
 
     try {
-      // Upload each image to ImageBB
-      const imageUploadPromises = selectedImages.map((image) => {
-        const imageData = new FormData();
-        imageData.append("image", image);
-        return axios.post(
-          `https://api.imgbb.com/1/upload?key=${imageHostKey}`,
-          imageData
-        );
-      });
+      if (selectedImages.length > 0) {
+        // Upload new images to ImageBB
+        const imageUploadPromises = selectedImages.map((image) => {
+          const imageData = new FormData();
+          imageData.append("image", image);
+          return axios.post(
+            `https://api.imgbb.com/1/upload?key=${imageHostKey}`,
+            imageData
+          );
+        });
 
-      const imageResponses = await Promise.all(imageUploadPromises);
-      imageResponses.forEach((response) => {
-        imageUrls.push(response.data.data.url);
-      });
+        const imageResponses = await Promise.all(imageUploadPromises);
+        imageUrls = imageResponses.map((response) => response.data.data.url);
+      }
 
-      // Prepare data to send to your backend
-      // const dataToSend = {
-      //   ...formData,
-      //   images: imageUrls,
-      // };
-      const dataToSend = {
-        name: formData.names,
-        brandName: formData.brandName,
-        price: formData.prices,
-        discountNumber: formData.discount,
-        sizes: sizes, // Array of sizes
-        images: imageUrls,
-        categoryName: formData.selectedOption,
-        categoryId: formData.selectedOptionId,
-        description: descriptions,
-        youtubeLink: formData.youtubeLinkok,
-        facebookLink: formData.facebookLink,
-        offers: formData.offer,
-        offerNames: formData.offerName,
-        subCategoryName: formData.subCategoriesName,
-        subCategoryIdNum: formData.subCategoriesId,
-        productShowStatus: formData.productStatus,
-        stockStatus: formData.productStockStatus,
-      };
+      // Prepare data to send to backend
+      const dataToSend = { ...formData, images: imageUrls };
 
-      // console.log(dataToSend)
-      // Post data to your backend
+      // Send update request
       await axios.patch(
         `http://localhost:5000/api/products/${idByProductData._id}`,
         dataToSend
       );
-      // console.log(dataToSend);
-      setUploadStatus("Upload successful !");
-      if (setUploadStatus) {
-        // Show success toast
-        toast.success("Product update successfully!");
-      } else {
-        // Handle error response
-        toast.error("Failed to product update data.");
-      }
+
+      setUploadStatus("Upload successful!");
+      toast.success("Product updated successfully!");
+
+      refetch();
     } catch (error) {
       setUploadStatus("Upload failed. Please try again.");
+      toast.error("Failed to update product.");
       console.error(error);
     }
-    refetch(true)
   };
-
-  
   const getColor = () => {
     if (uploadStatus === "Upload successful !") {
       return "green";
@@ -198,19 +189,19 @@ const ProductDataUpdate = () => {
     }
   };
 
-  if(loadings){
-    return <p>loading..</p>
+  if (loadings) {
+    return <p>loading..</p>;
   }
-    return (
-      <div>
+  return (
+    <div>
       <div>
         <div className="pt-5 ">
-          <h1 className="text-2xl font-semibold">Update Produts Data</h1>
+          <h1 className="text-2xl font-semibold">Update Produts Data ok</h1>
         </div>
 
         <form className="py-8" onSubmit={handleUpload}>
-          {
-            idByProductData ? (<div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-5">
+          {idByProductData ? (
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-5">
               {/* details side */}
               <div className="card p-10 shadow-xl">
                 <div className="text-sm my-4">
@@ -224,7 +215,6 @@ const ProductDataUpdate = () => {
                     defaultValue={idByProductData.name}
                     className="text-sm input input-bordered w-full"
                     onChange={handleInputChange}
-                
                   />
                 </div>
                 <div className="grid grid-cols-2 text-sm my-2 gap-4">
@@ -237,9 +227,10 @@ const ProductDataUpdate = () => {
                       className="select select-bordered w-full "
                       value={formData.selectedOption}
                       onChange={handleInputChange}
-                  
                     >
-                      <option value={idByProductData.categoryName}>{idByProductData.categoryName}</option>
+                      <option value={idByProductData.categoryName}>
+                        {idByProductData.categoryName}
+                      </option>
                       {categories.map((category, _id) => (
                         <option key={category._id} value={category.name}>
                           {category.name}
@@ -256,10 +247,10 @@ const ProductDataUpdate = () => {
                       className="select select-bordered w-full "
                       // value={formData.subCategoriesName}
                       onChange={handleInputChange}
-                
-                  
                     >
-                      <option value={idByProductData.subCategoryName}>{idByProductData.subCategoryName}</option>
+                      <option value={idByProductData.subCategoryName}>
+                        {idByProductData.subCategoryName}
+                      </option>
                       {subCategories.map((subCategory, _id) => (
                         <option key={subCategory._id} value={subCategory.name}>
                           {subCategory.name}
@@ -268,7 +259,7 @@ const ProductDataUpdate = () => {
                     </select>
                   </div>
                 </div>
-  
+
                 <div className="grid grid-cols-2 text-sm my-2 gap-4">
                   <div>
                     <p className="mb-2 font-semibold">
@@ -281,7 +272,9 @@ const ProductDataUpdate = () => {
                       onChange={handleInputChange}
                       required
                     >
-                      <option value={idByProductData.categoryId}>{idByProductData.categoryName}</option>
+                      <option value={idByProductData.categoryId}>
+                        {idByProductData.categoryName}
+                      </option>
                       {categories.map((category, _id) => (
                         <option key={category._id} value={category._id}>
                           {category.name}
@@ -299,9 +292,10 @@ const ProductDataUpdate = () => {
                       className="select select-bordered w-full "
                       // value={formData.subCategoriesId}
                       onChange={handleInputChange}
-                     
                     >
-                      <option value={idByProductData.subCategoryIdNum}>{idByProductData.subCategoryName}</option>
+                      <option value={idByProductData.subCategoryIdNum}>
+                        {idByProductData.subCategoryName}
+                      </option>
                       {subCategories.map((subCategory, _id) => (
                         <option key={subCategory._id} value={subCategory._id}>
                           {subCategory.name}
@@ -310,7 +304,7 @@ const ProductDataUpdate = () => {
                     </select>
                   </div>
                 </div>
-  
+
                 <div className="text-sm my-4">
                   <p className="mb-3 font-semibold">
                     Brand Name <span className="text-orange-400">*</span>
@@ -381,20 +375,20 @@ const ProductDataUpdate = () => {
               </div>
               {/* image up side */}
               <div className="card p-10 shadow-xl">
-              <div>
+                <div>
                   <p className="text-sm font-semibold">
                     Upload Images <span className="text-orange-400">*</span>
                   </p>
                 </div>
                 <div className="grid grid-cols-3 gap-x-5 gap-y-0">
-                  <div class="">
-                    <div class="upload-area">
-                      <div class="drag-drop">
-                        <p className="pb-3">Choos Product Photo</p>
-                        <label for="file-upload" class="file-label">
+                  {/* Upload area */}
+                  {/* <div>
+                    <div className="upload-area grid grid-cols-3 gap-x-5 gap-y-0">
+                      <div className="drag-drop">
+                        <p className="pb-3">Choose Product Photo</p>
+                        <label htmlFor="file-upload" className="file-label">
                           Choose File
                         </label>
-
                         <input
                           type="file"
                           id="file-upload"
@@ -404,143 +398,166 @@ const ProductDataUpdate = () => {
                         />
                       </div>
                     </div>
-                  </div>
+                  </div> */}
 
-                  <div>
-                    {idByProductData.images ? (
-                      <>
-                        <img
-                          className="my-5"
-                          style={{ width: "140px", height: "138px" }}
-                          src={idByProductData.images}
-                          alt=""
-                        />
-                      </>
-                    ) : (
-                      <img
-                        src={previewUrls}
-                        className="w-40 h-32 pb-4"
-                        alt=""
-                      />
-                    )}
-                  </div>
+                  {/* Display current or new images */}
+                  {/* <div className="">
+                    {previewUrls.length > 0
+                      ? previewUrls.map((url, index) => (
+                          <div key={index} className="my-5 w-full h-full">
+                            <img
+                              src={url}
+                              alt={`preview ${index}`}
+                              className="w-full h-full"
+                              
+                            />
+                          </div>
+                        ))
+                      : formData.images.length > 0 &&
+                        formData.images.map((image, index) => (
+                          <div key={index} className="my-5">
+                            <img
+                              src={image}
+                              alt={`product ${index}`}
+                              
+                            />
+                          </div>
+                        ))}
+                  </div> */}
+                  {/*  */}
+                </div>
+                {/* new */}
+                <div className="grid grid-cols-3 gap-x-5 gap-y-0">
+                <div class="">
+                  <div class="upload-area">
+                    <div class="drag-drop">
+                      <p className="pb-3">Choos Product Photo</p>
+                      <label for="file-upload" class="file-label">
+                        Choose File
+                      </label>
 
-                  {previewUrls.map((url, index) => (
-                    <div key={index} className="my-5">
-                      <img
-                        src={url}
-                        alt={`preview ${index}`}
-                        style={{ width: "140px", height: "138px" }}
+                      <input
+                        type="file"
+                        id="file-upload"
+                        className="file-input"
+                        multiple
+                        onChange={handleImageChange}
                       />
                     </div>
-                  ))}
+                  </div>
                 </div>
+
+                {previewUrls.length > 0
+                      ? previewUrls.map((url, index) => (
+                          <div key={index} className="">
+                            <img
+                              src={url}
+                              alt={`preview ${index}`}
+                              // className="w-full h-full"
+                              style={{ width: "100px", height: "100px" }}
+                            />
+                          </div>
+                        ))
+                      : formData.images.length > 0 &&
+                        formData.images.map((image, index) => (
+                          <div key={index} className="my-5">
+                            <img
+                              src={image}
+                              alt={`product ${index}`}
+                              style={{ width: "100px", height: "100px" }}
+                            />
+                          </div>
+                        ))}
+              </div>
+
                 <div className="w-full flex justify-center"></div>
                 <p className="text-sm font-thin text-justify opacity-70">
                   You need to add at least 3 images. Pay attention to the
                   quality of the pictures you add, comply with the background
                   color standards.
                 </p>
-                {/* <div className="text-sm my-5">
-                  <p className="font-semibold">
-                    Add Size <span className="text-orange-400">*</span>
-                  </p>
+
+                <div>
+                  <p className="text-sm font-semibold my-4">Product Sizes</p>
                   <div className="grid grid-cols-2 gap-4">
-                  
-                    {(idByProductData.sizes || []).map((size, index) => (
-                      <div className="flex items-center my-2" >
+                    {sizes.map((size, index) => (
+                      <div className="flex items-center my-2" key={index}>
                         <input
-                        key={index}
                           type="text"
-                          value={size}
+                          value={size} // Bind input value to the current size
                           onChange={(e) =>
                             handleSizeChange(index, e.target.value)
-                          }
+                          } // Update size on change
                           placeholder="Add Size"
                           className="text-sm input input-bordered w-full"
-                          defaultValue={size}
                         />
                         <span
                           className="cursor-pointer"
-                          onClick={() => removeSizeField(index)}
+                          onClick={() => removeSizeField(index)} // Remove size field on click
                         >
                           <i className="fa-solid fa-xmark font-semibold text-lg ms-2"></i>
                         </span>
                       </div>
                     ))}
                   </div>
+
                   <div className="flex justify-center my-4">
                     <button
                       type="button"
-                      className=" text-sm rounded text-white addProductsAllButton px-3 font-thin py-1"
-                      onClick={addSizeField}
+                      className="text-sm rounded text-white addProductsAllButton px-3 font-thin py-1"
+                      onClick={addSizeField} // Add new size field on button click
                     >
-                      Add More Size <i class="fa-solid fa-plus"></i>
+                      Add More Size <i className="fa-solid fa-plus"></i>
                     </button>
                   </div>
-                </div> */}
-
-<div>
-      <h2>Product Sizes</h2>
-      <div>
-        {sizes.map((size, index) => (
-          <div className="flex items-center my-2" key={index}>
-            <input
-              type="text"
-              value={size} // Bind input value to the current size
-              onChange={(e) => handleSizeChange(index, e.target.value)} // Update size on change
-              placeholder="Add Size"
-              className="text-sm input input-bordered w-full"
-            />
-            <span
-              className="cursor-pointer"
-              onClick={() => removeSizeField(index)} // Remove size field on click
-            >
-              <i className="fa-solid fa-xmark font-semibold text-lg ms-2"></i>
-            </span>
-          </div>
-        ))}
-      </div>
-
-      <div className="flex justify-center my-4">
-        <button
-          type="button"
-          className="text-sm rounded text-white addProductsAllButton px-3 font-thin py-1"
-          onClick={addSizeField} // Add new size field on button click
-        >
-          Add More Size <i className="fa-solid fa-plus"></i>
-        </button>
-      </div>
-    </div>
+                </div>
 
                 <div className="py-4">
-                <h3 className="text-sm font-semibold mb-2">Dynamic Color Inputs</h3>
-                {(idByProductData.colorsData || []).map((color, index) => (
-                  <div key={index} className="flex gap-4">
-                    <input
-                      type="text"
-                      name="colorName"
-                      placeholder="Color Name"
-                      value={color.colorName}
-                      onChange={(event) => handleColorInputChange(index, event)}
-                       className="text-sm input input-bordered w-full my-1"
-                    />
-                    <input
-                      type="text"
-                      name="colorCode"
-                      placeholder="Color Code"
-                      value={color.colorCode}
-                      onChange={(event) => handleColorInputChange(index, event)}
-                      className="text-sm input input-bordered w-full my-1"
-                    />
-                    <button type="button" className="" onClick={() => removeColorField(index)}>X</button>
+                  <h3 className="text-sm font-semibold mb-2">
+                    Dynamic Color Inputs
+                  </h3>
+                  {colors.map((color, index) => (
+                    <div key={index} className="flex gap-4 mb-2">
+                      <input
+                        type="text"
+                        name="colorName"
+                        placeholder="Color Name"
+                        value={color.colorName}
+                        onChange={(event) =>
+                          handleColorInputChange(index, event)
+                        }
+                        className="text-sm input input-bordered w-full"
+                      />
+                      <input
+                        type="text"
+                        name="colorCode"
+                        placeholder="Color Code"
+                        value={color.colorCode}
+                        onChange={(event) =>
+                          handleColorInputChange(index, event)
+                        }
+                        className="text-sm input input-bordered w-full"
+                      />
+                      <button
+                        type="button"
+                        className="text-red-500 font-semibold"
+                        onClick={() => removeColorField(index)} // Remove color input
+                      >
+                        X
+                      </button>
+                    </div>
+                  ))}
+                  <div className="flex justify-center">
+                    <button
+                      type="button"
+                      className="text-sm rounded text-white addProductsAllButton px-3 font-thin py-1"
+                      onClick={addColorField} // Add new color input on button click
+                    >
+                      Add More Color +
+                    </button>
                   </div>
-                ))}
-               <div className="flex justify-center py-4">
-               <button type="button" className=" text-sm rounded text-white addProductsAllButton px-3 font-thin py-1" onClick={addColorField}>Add More Color +</button>
-               </div>
-              </div>
-                
+                </div>
+
                 <div className="mb-4">
                   <p className="text-sm font-semibold mb-3">
                     Price Set <span className="text-orange-400">*</span>{" "}
@@ -579,14 +596,17 @@ const ProductDataUpdate = () => {
                       placeholder="Minimum pirce"
                       className="text-sm input input-bordered w-full"
                     /> */}
-                    <input
-                      type="Text"
+                    <select
                       name="offer"
-                      placeholder="Only Type Here Offer (Offer)"
-                      className="text-sm input input-bordered w-full"
+                      className="select select-bordered w-full "
+                      // value={formData.subCategoriesName}
                       onChange={handleInputChange}
-                      defaultValue={idByProductData.offers}
-                    />
+                    >
+                      <option value="">Select Deals</option>
+
+                      <option value="hot">Hot Deals</option>
+                      <option value="treanding">Trending deals</option>
+                    </select>
                     <input
                       type="text"
                       name="offerName"
@@ -618,7 +638,7 @@ const ProductDataUpdate = () => {
                     />
                     <input
                       type="text"
-                      name="facebookLink"
+                      name="facebookLinke"
                       placeholder="Meta Link"
                       className="text-sm input input-bordered w-full"
                       onChange={handleInputChange}
@@ -638,7 +658,9 @@ const ProductDataUpdate = () => {
                       onChange={handleInputChange}
                       required
                     >
-                      <option value={idByProductData.productShowStatus}>{idByProductData.productShowStatus}</option>
+                      <option value={idByProductData.productShowStatus}>
+                        {idByProductData.productShowStatus}
+                      </option>
                       <option value="publish">Publish</option>
                       <option value="unPublish">Un Publish</option>
                     </select>
@@ -654,7 +676,9 @@ const ProductDataUpdate = () => {
                       onChange={handleInputChange}
                       required
                     >
-                      <option value={idByProductData.stockStatus}>{idByProductData.stockStatus}</option>
+                      <option value={idByProductData.stockStatus}>
+                        {idByProductData.stockStatus}
+                      </option>
                       <option value="inStock">Stock In</option>
                       <option value="stockOut">Stock Out</option>
                     </select>
@@ -671,13 +695,15 @@ const ProductDataUpdate = () => {
                   <span style={{ color: getColor() }}> {uploadStatus} </span>
                 </p>
               </div>
-            </div>) : (<> </>)
-          }
+            </div>
+          ) : (
+            <> </>
+          )}
         </form>
       </div>
       <ToastContainer />
     </div>
-    );
+  );
 };
 
 export default ProductDataUpdate;

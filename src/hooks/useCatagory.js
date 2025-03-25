@@ -15,7 +15,6 @@ const useCatagory = () => {
     }, [refetchData]);
 
     const refetch = () => setreFacthData((prevState) => !prevState);
-
    
     return [categories, loading, refetch]
 };
