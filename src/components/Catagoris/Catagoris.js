@@ -58,32 +58,43 @@ const Catagoris = () => {
   }, []);
 
   // data post haldle
+  // without imge and image 
   const categoryPostHandle = (event) => {
     event.preventDefault();
     const form = event.target;
-
+  
     const name = form.name.value;
     const activeStatus = form.status.value;
-    // const image = form.image.files[0];
-    const formData = new FormData();
-    formData.append("image", image);
-
-    fetch(`https://api.imgbb.com/1/upload?key=${imageHostKey}`, {
-      method: "POST",
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then((imageData) => {
-        const image = imageData.data.display_url;
-        console.log(image);
-        categoryDataPost(name, activeStatus, image, date, time);
-        form.reset("");
+    const imageFile = form.image.files[0]; // Get image file
+  
+    if (imageFile) {
+      // If image is selected, upload it first
+      const formData = new FormData();
+      formData.append("image", imageFile);
+  
+      fetch(`https://api.imgbb.com/1/upload?key=${imageHostKey}`, {
+        method: "POST",
+        body: formData,
       })
-      .catch(
-        (e) => console.log(e),
-        setImageError("Must Be You Have To Choos Category Photo")
-      );
+        .then((res) => res.json())
+        .then((imageData) => {
+          const imageUrl = imageData.data.display_url; // Uploaded image URL
+          categoryDataPost(name, activeStatus, imageUrl, date, time); // Post with image
+          form.reset();
+        })
+        .catch((e) => {
+          console.log(e);
+          setImageError("Failed to upload image. Please try again.");
+        });
+    } else {
+      // If no image is selected, post data without image
+      categoryDataPost(name, activeStatus, null, date, time);
+      form.reset();
+    }
   };
+  
+  // by default image set 
+
 
   // category data
   const categoryDataPost = (name, activeStatus, image, date, time) => {
@@ -115,6 +126,45 @@ const Catagoris = () => {
       })
       .catch((e) => console.log(e));
   };
+
+  // const categoryPostHandle = (event) => {
+  //   event.preventDefault();
+  //   const form = event.target;
+  
+  //   const name = form.name.value;
+  //   const activeStatus = form.status.value;
+  //   const imageFile = form.image.files[0]; // Get selected image file
+  
+  //   // Set a default image (previous image or placeholder)
+  //   let image = idByCategoryData?.image || 
+  //     "https://e7.pngegg.com/pngimages/179/588/png-clipart-leaf-text-tree-yellow-new-yellow-and-white-new-logo-leaf-text-thumbnail.png";
+  
+  //   // If an image is selected, upload it first
+  //   if (imageFile) {
+  //     const formData = new FormData();
+  //     formData.append("image", imageFile);
+  
+  //     fetch(`https://api.imgbb.com/1/upload?key=${imageHostKey}`, {
+  //       method: "POST",
+  //       body: formData,
+  //     })
+  //       .then((res) => res.json())
+  //       .then((imageData) => {
+  //         image = imageData.data.display_url; // Update image URL if uploaded
+  //         categoryDataPost(name, activeStatus, image, date, time);
+  //         form.reset();
+  //       })
+  //       .catch((e) => {
+  //         console.log(e);
+  //         setImageError("You must choose a category photo.");
+  //       });
+  //   } else {
+  //     // No new image selected, keep the existing image
+  //     categoryDataPost(name, activeStatus, image, date, time);
+  //     form.reset();
+  //   }
+  // };
+  
 
   return (
     <div>
