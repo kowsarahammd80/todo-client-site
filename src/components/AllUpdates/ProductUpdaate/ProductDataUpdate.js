@@ -15,7 +15,7 @@ const ProductDataUpdate = () => {
   // console.log(_id)
   const { idByProductData, refetch, loadings } = useProductById(_id);
 
-  const [subCategories] = useSubCategoryAll();
+  // const [subCategories] = useSubCategoryAll();
   const [categories, loading] = useCatagory();
   const [selectedImages, setSelectedImages] = useState([]);
   const [text, setText] = useState("");
@@ -61,8 +61,8 @@ const ProductDataUpdate = () => {
         facebookLink: idByProductData.facebookLink || "",
         offers: idByProductData.offers || "",
         offerNames: idByProductData.offerNames || "",
-        subCategoryName: idByProductData.subCategoryName || "",
-        subCategoryIdNum: idByProductData.subCategoryIdNum || "",
+        // subCategoryName: idByProductData.subCategoryName || "",
+        // subCategoryIdNum: idByProductData.subCategoryIdNum || "",
         productShowStatus: idByProductData.productShowStatus || "",
         stockStatus: idByProductData.stockStatus || "",
         colorsData: idByProductData.colorsData || [],
@@ -240,29 +240,6 @@ const ProductDataUpdate = () => {
                   </div>
                   <div>
                     <p className="mb-2 font-semibold">
-                      Sub Category <span className="text-orange-400">*</span>
-                    </p>
-                    <select
-                      name="subCategoriesName"
-                      className="select select-bordered w-full "
-                      // value={formData.subCategoriesName}
-                      onChange={handleInputChange}
-                    >
-                      <option value={idByProductData.subCategoryName}>
-                        {idByProductData.subCategoryName}
-                      </option>
-                      {subCategories.map((subCategory, _id) => (
-                        <option key={subCategory._id} value={subCategory.name}>
-                          {subCategory.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 text-sm my-2 gap-4">
-                  <div>
-                    <p className="mb-2 font-semibold">
                       Again Category <span className="text-orange-400">*</span>
                     </p>
                     <select
@@ -282,7 +259,51 @@ const ProductDataUpdate = () => {
                       ))}
                     </select>
                   </div>
-                  <div>
+                  {/* <div>
+                    <p className="mb-2 font-semibold">
+                      Sub Category <span className="text-orange-400">*</span>
+                    </p>
+                    <select
+                      name="subCategoriesName"
+                      className="select select-bordered w-full "
+                      // value={formData.subCategoriesName}
+                      onChange={handleInputChange}
+                    >
+                      <option value={idByProductData.subCategoryName}>
+                        {idByProductData.subCategoryName}
+                      </option>
+                      {subCategories.map((subCategory, _id) => (
+                        <option key={subCategory._id} value={subCategory.name}>
+                          {subCategory.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div> */}
+                </div>
+
+                <div className="grid grid-cols-2 text-sm my-2 gap-4">
+                  {/* <div>
+                    <p className="mb-2 font-semibold">
+                      Again Category <span className="text-orange-400">*</span>
+                    </p>
+                    <select
+                      name="selectedOptionId"
+                      className="select select-bordered w-full "
+                      // value={formData.selectedOptionId}
+                      onChange={handleInputChange}
+                      required
+                    >
+                      <option value={idByProductData.categoryId}>
+                        {idByProductData.categoryName}
+                      </option>
+                      {categories.map((category, _id) => (
+                        <option key={category._id} value={category._id}>
+                          {category.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div> */}
+                  {/* <div>
                     <p className="mb-2 font-semibold">
                       Again Sub Category{" "}
                       <span className="text-orange-400">*</span>
@@ -302,7 +323,7 @@ const ProductDataUpdate = () => {
                         </option>
                       ))}
                     </select>
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="text-sm my-4">

@@ -10,11 +10,9 @@ import AddSubCategory from '../../components/SubCategoy/AddSubCategory';
 import SubCategoryList from '../../components/SubCategoy/SubCategoryList';
 import ProductList from '../../components/ProductsAdd/ProductList';
 import SubCategoryUpdate from '../../components/AllUpdates/SubCategoryUpdate/SubCategoryUpdate';
-import ProductUpdate from '../../components/AllUpdates/ProductUpdaate/ProductUpdate';
 import HomeHerroAdd from '../../components/HomeHerroAdd/HomeHerroAdd';
 import HomeHeroList from '../../components/HomeHerroAdd/HomeHeroList';
 import HomeHeroStatusUpdate from '../../components/AllUpdates/HomeHeroUpdate/HomeHeroStatusUpdate';
-import ProductListShow from '../../components/ProductsAdd/ProductListShow';
 import ProductDataUpdate from '../../components/AllUpdates/ProductUpdaate/ProductDataUpdate';
 
 
@@ -36,10 +34,7 @@ const router = createBrowserRouter([
                 path: '/productsList',
                 element: <ProductList/>
             },
-            // {
-            //     path: '/productsList/:_id',
-            //     element: <ProductUpdate/>
-            // },
+            
             {
                 path: '/productsList/:_id',
                 element: <ProductDataUpdate/>

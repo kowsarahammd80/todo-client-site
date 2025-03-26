@@ -30,8 +30,8 @@ const ProductsUp = () => {
     facebookLink: "",
     offers: "",
     offerNames: "",
-    subCategoryName: "",
-    subCategoryIdNum: "",
+    // subCategoryName: "",
+    // subCategoryIdNum: "",
     productShowStatus: "",
     stockStatus: "",
   });
@@ -144,8 +144,8 @@ const ProductsUp = () => {
         facebookLink: formData.facebookLink,
         offers: formData.offer,
         offerNames: formData.offerName,
-        subCategoryName: formData.subCategoriesName,
-        subCategoryIdNum: formData.subCategoriesId,
+        // subCategoryName: formData.subCategoriesName,
+        // subCategoryIdNum: formData.subCategoriesId,
         productShowStatus: formData.productStatus,
         stockStatus: formData.productStockStatus,
         colorsData: colors
@@ -224,28 +224,7 @@ const ProductsUp = () => {
                     ))}
                   </select>
                 </div>
-                <div>
-                  <p className="mb-2 font-semibold">
-                    Sub Category <span className="text-orange-400">*</span>
-                  </p>
-                  <select
-                    name="subCategoriesName"
-                    className="select select-bordered w-full "
-                    // value={formData.subCategoriesName}
-                    onChange={handleInputChange}
-                    required
-                  >
-                    <option value="">Select Option</option>
-                    {subCategories.map((subCategory, _id) => (
-                      <option key={subCategory._id} value={subCategory.name}>
-                        {subCategory.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
 
-              <div className="grid grid-cols-2 text-sm my-2 gap-4">
                 <div>
                   <p className="mb-2 font-semibold">
                     Again Category <span className="text-orange-400">*</span>
@@ -265,7 +244,49 @@ const ProductsUp = () => {
                     ))}
                   </select>
                 </div>
-                <div>
+
+                {/* <div>
+                  <p className="mb-2 font-semibold">
+                    Sub Category <span className="text-orange-400">*</span>
+                  </p>
+                  <select
+                    name="subCategoriesName"
+                    className="select select-bordered w-full "
+                    // value={formData.subCategoriesName}
+                    onChange={handleInputChange}
+                    
+                  >
+                    <option value="">Select Option</option>
+                    {subCategories.map((subCategory, _id) => (
+                      <option key={subCategory._id} value={subCategory.name}>
+                        {subCategory.name}
+                      </option>
+                    ))}
+                  </select>
+                </div> */}
+              </div>
+
+              <div className="grid grid-cols-2 text-sm my-2 gap-4">
+                {/* <div>
+                  <p className="mb-2 font-semibold">
+                    Again Category <span className="text-orange-400">*</span>
+                  </p>
+                  <select
+                    name="selectedOptionId"
+                    className="select select-bordered w-full "
+                    // value={formData.selectedOptionId}
+                    onChange={handleInputChange}
+                    required
+                  >
+                    <option value="">Select Option</option>
+                    {categories.map((category, _id) => (
+                      <option key={category._id} value={category._id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                </div> */}
+                {/* <div>
                   <p className="mb-2 font-semibold">
                     Again Sub Category{" "}
                     <span className="text-orange-400">*</span>
@@ -275,7 +296,7 @@ const ProductsUp = () => {
                     className="select select-bordered w-full "
                     // value={formData.subCategoriesId}
                     onChange={handleInputChange}
-                    required
+                    
                   >
                     <option value="">Select Option</option>
                     {subCategories.map((subCategory, _id) => (
@@ -284,7 +305,7 @@ const ProductsUp = () => {
                       </option>
                     ))}
                   </select>
-                </div>
+                </div> */}
               </div>
 
               <div className="text-sm my-4">

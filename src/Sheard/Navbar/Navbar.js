@@ -60,11 +60,11 @@ const Navbar = () => {
                     <a className="text-sm">Products Lists</a>
                   </li>
                 </Link>
-                <Link to="">
+                {/* <Link to="">
                   <li>
                     <a className="text-sm">test</a>
                   </li>
-                </Link>
+                </Link> */}
               </ul>
             </div>
           </li>
@@ -98,7 +98,7 @@ const Navbar = () => {
               </ul>
             </div>
           </li>
-          <li className="my-4 py-3 px-2 w-full">
+          {/* <li className="my-4 py-3 px-2 w-full">
             <div className="dropdown w-full">
               <div tabIndex={0} role="button" className="">
                 <div className="flex items-center justify-between text-sm w-full">
@@ -127,7 +127,7 @@ const Navbar = () => {
                 </Link>
               </ul>
             </div>
-          </li>
+          </li> */}
           <li className="my-4 py-3 px-2 w-full">
             {" "}
             <div className="dropdown w-full">

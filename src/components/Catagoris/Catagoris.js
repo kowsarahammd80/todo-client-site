@@ -58,20 +58,20 @@ const Catagoris = () => {
   }, []);
 
   // data post haldle
-  // without imge and image 
+  // without imge and image
   const categoryPostHandle = (event) => {
     event.preventDefault();
     const form = event.target;
-  
+
     const name = form.name.value;
     const activeStatus = form.status.value;
     const imageFile = form.image.files[0]; // Get image file
-  
+
     if (imageFile) {
       // If image is selected, upload it first
       const formData = new FormData();
       formData.append("image", imageFile);
-  
+
       fetch(`https://api.imgbb.com/1/upload?key=${imageHostKey}`, {
         method: "POST",
         body: formData,
@@ -92,9 +92,8 @@ const Catagoris = () => {
       form.reset();
     }
   };
-  
-  // by default image set 
 
+  // by default image set
 
   // category data
   const categoryDataPost = (name, activeStatus, image, date, time) => {
@@ -130,20 +129,20 @@ const Catagoris = () => {
   // const categoryPostHandle = (event) => {
   //   event.preventDefault();
   //   const form = event.target;
-  
+
   //   const name = form.name.value;
   //   const activeStatus = form.status.value;
   //   const imageFile = form.image.files[0]; // Get selected image file
-  
+
   //   // Set a default image (previous image or placeholder)
-  //   let image = idByCategoryData?.image || 
+  //   let image = idByCategoryData?.image ||
   //     "https://e7.pngegg.com/pngimages/179/588/png-clipart-leaf-text-tree-yellow-new-yellow-and-white-new-logo-leaf-text-thumbnail.png";
-  
+
   //   // If an image is selected, upload it first
   //   if (imageFile) {
   //     const formData = new FormData();
   //     formData.append("image", imageFile);
-  
+
   //     fetch(`https://api.imgbb.com/1/upload?key=${imageHostKey}`, {
   //       method: "POST",
   //       body: formData,
@@ -164,17 +163,15 @@ const Catagoris = () => {
   //     form.reset();
   //   }
   // };
-  
 
   return (
     <div>
-      <div>
-        <p className="text-xl font-semibold pt-5">Add Category</p>
-      </div>
-
       <form className="py-5 text-sm" onSubmit={categoryPostHandle}>
-        <div className="">
+        <div className="flex justify-center items-center mt-16">
           <div className="card p-5 w-8/12">
+            <div>
+              <p className="text-xl font-semibold pt-5">Add Category</p>
+            </div>
             <div className="py-4">
               <p className="pb-4 font-semibold">
                 Category Name <span className="text-orange-400">*</span>

@@ -34,6 +34,7 @@ const CategoryUp = () => {
     const form = event.target;
 
     const name = form.name.value;
+    const activeStatus = form.status.value;
 
     const formData = new FormData();
     
@@ -57,7 +58,7 @@ const CategoryUp = () => {
       }
 
       const imageUrl = image ? imageData.data.display_url : idByCategoryData.image;
-      catagoryUpdateData(name, imageUrl);
+      catagoryUpdateData(name, activeStatus, imageUrl);
     })
     .catch((e) => {
       setImageError("Image upload failed. Please try again.");
@@ -66,10 +67,11 @@ const CategoryUp = () => {
   }
 
   // Update category data in the backend
-  const catagoryUpdateData = (name, imageUrl) => {
+  const catagoryUpdateData = (name, activeStatus,imageUrl) => {
     const updateCategoryData = {
       name: name,
-      image: imageUrl
+      image: imageUrl,
+      activeStatus: activeStatus,
     }
 
     fetch(`http://localhost:5000/api/category/${idByCategoryData?._id}`, {
@@ -122,6 +124,21 @@ const CategoryUp = () => {
                   className="text-sm input input-bordered w-full"
                 />
               </div>
+
+              <div>
+              <p className="mb-2 font-semibold">
+                Activity <span className="text-orange-400">*</span>
+              </p>
+              <select
+                name="status"
+                className="select select-bordered w-full"
+                
+              >
+                <option value={idByCategoryData.activeStatus}>{idByCategoryData.activeStatus}</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
 
               <div className="py-4">
                 <p className="pb-4 font-semibold">
