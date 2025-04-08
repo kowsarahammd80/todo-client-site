@@ -147,9 +147,12 @@ const Navbar = () => {
                 tabIndex={0}
                 className="dropdown-content menu bg-slate-800 rounded-box z-[1] text-sm w-52 shadow"
               >
-                <li>
-                  <a> All Order List</a>
-                </li>
+                <Link to='/orders/orders-All'>
+                  <li>
+                    <a> All Order List</a>
+                  </li>
+                </Link>
+
                 <li>
                   <a>Order Take</a>
                 </li>
@@ -166,7 +169,7 @@ const Navbar = () => {
                     <i class="fa-solid fa-rectangle-list"></i>
                   </p>
                   <p>Home Hero</p>
-                  
+
                   <p className="">
                     <i class="fa-solid ms-10 fa-angle-down"></i>
                   </p>
@@ -186,7 +189,6 @@ const Navbar = () => {
                     <a>Home Hero List</a>
                   </li>
                 </Link>
-                
               </ul>
             </div>
           </li>

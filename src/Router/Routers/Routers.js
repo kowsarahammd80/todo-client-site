@@ -14,6 +14,8 @@ import HomeHerroAdd from '../../components/HomeHerroAdd/HomeHerroAdd';
 import HomeHeroList from '../../components/HomeHerroAdd/HomeHeroList';
 import HomeHeroStatusUpdate from '../../components/AllUpdates/HomeHeroUpdate/HomeHeroStatusUpdate';
 import ProductDataUpdate from '../../components/AllUpdates/ProductUpdaate/ProductDataUpdate';
+import OrderMain from '../../LayOut/OrderMain/OrderMain';
+import AllOrders from '../../components/AllOrders/AllOrders';
 
 
 
@@ -80,6 +82,17 @@ const router = createBrowserRouter([
             //     path: '/productsList/:_id',
             //     element: <ProductListShow/>
             // },  
+
+            {
+                path: '/orders',
+                element: <OrderMain/>,
+                children:[
+                  {
+                    path: '/orders/orders-All',
+                    element: <AllOrders/>
+                  }
+                ]
+            }
                                           
         ]
     }
