@@ -5,7 +5,7 @@ import OrderNav from '../../Sheard/OrderNav/OrderNav';
 const OrderMain = () => {
     return (
         <div>
-            <OrderNav/>
+            {/* <OrderNav/> */}
             <Outlet/>
         </div>
     );
