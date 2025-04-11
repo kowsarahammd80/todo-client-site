@@ -9,7 +9,7 @@ const AllOrders = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(20);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterStatus, setFilterStatus] = useState("All");
+  const [filterStatus, setFilterStatus] = useState("All Order");
 
   const filteredOrders = allOrderList.filter((order) => {
     const matchesSearch = [order.customerNumber, order.invNo, order.orderId]
@@ -18,7 +18,7 @@ const AllOrders = () => {
       .includes(searchTerm.toLowerCase());
 
     const matchesStatus =
-      filterStatus === "All" ||
+      filterStatus === "All Order" ||
       (filterStatus === "COD Order" && order.productOrderMethod === "cashon") ||
       (filterStatus === "AVD Order" && order.productOrderMethod === "avd") ||
       (filterStatus === "Confirm Order" && order.orderStatus === "Confirm") ||
@@ -36,7 +36,7 @@ const AllOrders = () => {
   const currentOrders = filteredOrders.slice(firstPostIndex, lastPostIndex);
 
   const statusButtons = [
-    "All",
+    "All Order",
     "COD Order",
     "AVD Order",
     "Confirm Order",
@@ -61,7 +61,7 @@ const AllOrders = () => {
   return (
     <div>
       <div className="pb-5 pt-5">
-        <p className="text-xl font-semibold">Order List <span>({allOrderList.length})</span></p>
+        <p className="text-xl font-semibold"> <span>{filterStatus}</span> List <span>({filteredOrders.length})</span></p>
       </div>
       <div className="card p-5 shadow-xl">
       <div className="grid grid-cols-8 gap-2 pb-5">
