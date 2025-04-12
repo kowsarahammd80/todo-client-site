@@ -126,7 +126,7 @@ const AllOrders = () => {
                 <th className="">Total</th>
                 
                 <th className="">Status</th>
-                <th className="">Details</th>
+                <th className="">Action</th>
               </tr>
             </thead>
             {currentOrders?.map((order, index) => {
