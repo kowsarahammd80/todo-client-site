@@ -5,7 +5,7 @@ import Pagination from "../Pagination/Pagination";
 
 const AllOrders = () => {
   const [allOrderList, loading] = useAllOrderList();
-  console.log(allOrderList);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(20);
   const [searchTerm, setSearchTerm] = useState("");
@@ -20,10 +20,12 @@ const AllOrders = () => {
     const matchesStatus =
       filterStatus === "All Order" ||
       (filterStatus === "COD Order" && order.productOrderMethod === "cashon") ||
-      (filterStatus === "AVD Order" && order.productOrderMethod === "avd") ||
+      (filterStatus === "AVD Order" &&
+        order.productOrderMethod === "onlinePay") ||
       (filterStatus === "Confirm Order" && order.orderStatus === "Confirm") ||
       (filterStatus === "Pending Order" && order.orderStatus === "Pending") ||
-      (filterStatus === "Prosessing Order" && order.orderStatus === "Processing") ||
+      (filterStatus === "Prosessing Order" &&
+        order.orderStatus === "Processing") ||
       (filterStatus === "Onthe away" && order.orderStatus === "Onthe away") ||
       (filterStatus === "Return" && order.orderStatus === "Return");
 
@@ -43,7 +45,7 @@ const AllOrders = () => {
     "Pending Order",
     "Prosessing Order",
     "Onthe away",
-    "Return"
+    "Return",
   ];
   useEffect(() => {
     setCurrentPage(1);
@@ -51,20 +53,23 @@ const AllOrders = () => {
 
   if (loading) {
     return (
-        <div className="flex justify-center items-center h-screen">
-            <p className="font-semibold text-sm">loading...</p>
-        </div>
-      
+      <div className="flex justify-center items-center h-screen">
+        <p className="font-semibold text-sm">loading...</p>
+      </div>
     );
   }
 
   return (
     <div>
       <div className="pb-5 pt-5">
-        <p className="text-xl font-semibold"> <span>{filterStatus}</span> List <span>({filteredOrders.length})</span></p>
+        <p className="text-xl font-semibold">
+          {" "}
+          <span>{filterStatus}</span> List{" "}
+          <span>({filteredOrders.length})</span>
+        </p>
       </div>
       <div className="card p-5 shadow-xl">
-      <div className="grid grid-cols-8 gap-2 pb-5">
+        <div className="grid grid-cols-8 gap-2 pb-5">
           {statusButtons.map((status) => (
             <button
               key={status}
@@ -80,12 +85,15 @@ const AllOrders = () => {
           ))}
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-10 pb-5">
-          
-          
           {/* order Filter */}
           <div>
             <label className="input input-bordered flex items-center">
-              <input onChange={(e) => setSearchTerm(e.target.value)} type="text" className="grow" placeholder="Search, orderid, invno, number" />
+              <input
+                onChange={(e) => setSearchTerm(e.target.value)}
+                type="text"
+                className="grow"
+                placeholder="Search, orderid, invno, number"
+              />
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 16 16"
@@ -100,18 +108,15 @@ const AllOrders = () => {
               </svg>
             </label>
           </div>
-          
+
           <div className="flex justify-end">
-            <Link to="/categoy">
+            {/* <Link to="/categoy">
               <button className="addNewButton rounded px-10 py-2">
                 {" "}
                 <i class="fa-solid fa-plus"></i> Add New
               </button>
-            </Link>
+            </Link> */}
           </div>
-
-          
-          
         </div>
         <div className="overflow-x-auto shadow">
           <table className="table w-full">
@@ -124,7 +129,7 @@ const AllOrders = () => {
                 <th className="">Date</th>
                 <th className="">Payment Status</th>
                 <th className="">Total</th>
-                
+
                 <th className="">Status</th>
                 <th className="">Action</th>
               </tr>
@@ -139,11 +144,41 @@ const AllOrders = () => {
                     <td className="">{order.customerName}</td>
                     <td>{order.customerNumber}</td>
                     <td>{order.createdAt}</td>
-                    <td><p className={`text-center rounded-full ${order.productOrderMethod === "cashon" ? "border border-sky-300 bg-transparent bg-sky-50 text-sky-700" : "border border-green-300 bg-transparent bg-green-50 text-green-700"}`}>{order.productOrderMethod === "cashon" ? "Cash On" : "Online Pay"}</p></td>
+                    <td>
+                      <p
+                        className={`text-center rounded-full ${
+                          order.productOrderMethod === "cashon"
+                            ? "border border-sky-300 bg-transparent bg-sky-50 text-sky-700"
+                            : "border border-green-300 bg-transparent bg-green-50 text-green-700"
+                        }`}
+                      >
+                        {order.productOrderMethod === "cashon"
+                          ? "Cash On"
+                          : "Online Pay"}
+                      </p>
+                    </td>
                     <td className="font-semibold">{order.inTotal}</td>
-                    
-                    <td > <p className={`text-center rounded-full text-sm px-1 ${order.orderStatus === "Pending" ? "border border-amber-300 bg-transparent bg-amber-50 text-amber-700" : ""}`}> {order.orderStatus} </p> </td>
-                    <td><p className="text-sm text-center border border-dashed px-2 shadow rounded-full border-green-300 bg-transparent bg-green-50 text-green-700 cursor-pointer">Details</p></td>
+
+                    <td>
+                      {" "}
+                      <p
+                        className={`text-center rounded-full text-sm px-1 ${
+                          order.orderStatus === "Pending"
+                            ? "border border-amber-300 bg-transparent bg-amber-50 text-amber-700"
+                            : ""
+                        }`}
+                      >
+                        {" "}
+                        {order.orderStatus}{" "}
+                      </p>{" "}
+                    </td>
+                    <td>
+                      <Link to={`/orders/single/${order._id}`}>
+                        <p className="text-sm text-center border border-dashed px-2 shadow rounded-full border-green-300 bg-transparent bg-green-50 text-green-700 cursor-pointer">
+                          Details
+                        </p>
+                      </Link>{" "}
+                    </td>
                   </tr>
                 </tbody>
               );

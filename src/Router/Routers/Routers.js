@@ -16,6 +16,7 @@ import HomeHeroStatusUpdate from '../../components/AllUpdates/HomeHeroUpdate/Hom
 import ProductDataUpdate from '../../components/AllUpdates/ProductUpdaate/ProductDataUpdate';
 import OrderMain from '../../LayOut/OrderMain/OrderMain';
 import AllOrders from '../../components/AllOrders/AllOrders';
+import SingleOrder from '../../components/SingleOrder/SingleOrder';
 
 
 
@@ -90,6 +91,10 @@ const router = createBrowserRouter([
                   {
                     path: '/orders/orders-All',
                     element: <AllOrders/>
+                  },
+                  {
+                    path: '/orders/single/:id',
+                    element: <SingleOrder/>
                   }
                 ]
             }
