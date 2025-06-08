@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useIdWiseOrder from "../../hooks/useIdWiseOrder";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
@@ -67,7 +67,13 @@ const SingleOrder = () => {
   return (
     <div className="max-w-4xl mx-auto my-10">
       {/* Download button */}
-      <div className="mb-4 text-right">
+      <div className="mb-4 text-left"></div>
+      <div className="mb-4 flex justify-between">
+        <Link to="/orders/orders-All">
+          <button className="border border-lime-400 px-4 py-1 rounded">
+            Back
+          </button>
+        </Link>
         <button
           onClick={handleDownloadPDF}
           className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
@@ -89,6 +95,7 @@ const SingleOrder = () => {
           <option value="Processing">Processing</option>
           <option value="Shipped">Shipped</option>
           <option value="Delivered">Delivered</option>
+          <option value="Return">Return</option>
           <option value="Cancelled">Cancelled</option>
         </select>
         <button
@@ -199,7 +206,7 @@ const SingleOrder = () => {
         </div>
 
         {/* Footer */}
-        <div className="mt-6 text-xs text-gray-500 text-center border-t pt-4">
+        <div className="mt-6 text-xs text-gray-500 text-center border-t pt-4 font-semibold">
           <p>
             Payment Method:{" "}
             {idWiseOrder?.productOrderMethod === "cashon"

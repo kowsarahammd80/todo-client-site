@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import useAllOrderList from "../../hooks/useAllOrderList";
 import Pagination from "../Pagination/Pagination";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 const AllOrders = () => {
   const [allOrderList, loading] = useAllOrderList();
-
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(20);
   const [searchTerm, setSearchTerm] = useState("");
@@ -20,21 +21,18 @@ const AllOrders = () => {
     const matchesStatus =
       filterStatus === "All Order" ||
       (filterStatus === "COD Order" && order.productOrderMethod === "cashon") ||
-      (filterStatus === "AVD Order" &&
-        order.productOrderMethod === "onlinePay") ||
+      (filterStatus === "AVD Order" && order.productOrderMethod === "onlinePay") ||
       (filterStatus === "Confirm Order" && order.orderStatus === "Confirm") ||
       (filterStatus === "Pending Order" && order.orderStatus === "Pending") ||
-      (filterStatus === "Prosessing Order" &&
-        order.orderStatus === "Processing") ||
-      (filterStatus === "Onthe away" && order.orderStatus === "Onthe away") ||
+      (filterStatus === "Prosessing Order" && order.orderStatus === "Processing") ||
+      (filterStatus === "Shipped" && order.orderStatus === "Shipped") ||
       (filterStatus === "Return" && order.orderStatus === "Return") ||
-      (filterStatus === "Delivered" && order.orderStatus === "delivered") ||
+      (filterStatus === "Delivered" && order.orderStatus === "Delivered") ||
       (filterStatus === "Cancelled" && order.orderStatus === "Cancelled");
 
     return matchesSearch && matchesStatus;
   });
 
-  // Pagination logic
   const lastPostIndex = currentPage * postsPerPage;
   const firstPostIndex = lastPostIndex - postsPerPage;
   const currentOrders = filteredOrders.slice(firstPostIndex, lastPostIndex);
@@ -46,14 +44,29 @@ const AllOrders = () => {
     "Confirm Order",
     "Pending Order",
     "Prosessing Order",
-    "Onthe away",
+    "Shipped",
     "Delivered",
     "Return",
     "Cancelled"
   ];
+
   useEffect(() => {
     setCurrentPage(1);
   }, [filterStatus, searchTerm]);
+
+  const downloadPDF = () => {
+    const input = document.getElementById("orderTableToPDF");
+    html2canvas(input, { scale: 2 }).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      pdf.save("order-list.pdf");
+    });
+  };
 
   if (loading) {
     return (
@@ -65,13 +78,18 @@ const AllOrders = () => {
 
   return (
     <div>
-      <div className="pb-5 pt-5">
+      <div className="pb-5 pt-5 flex justify-between items-center">
         <p className="text-xl font-semibold">
-          {" "}
-          <span>{filterStatus}</span> List{" "}
-          <span>({filteredOrders.length})</span>
+          <span>{filterStatus}</span> List <span>({filteredOrders.length})</span>
         </p>
+        <button
+          onClick={downloadPDF}
+          className="bg-blue-500 hover:bg-blue-600 text-white text-sm py-2 px-4 rounded shadow"
+        >
+          Download PDF
+        </button>
       </div>
+
       <div className="card p-5 shadow-xl">
         <div className="grid grid-cols-8 gap-2 pb-5">
           {statusButtons.map((status) => (
@@ -88,8 +106,8 @@ const AllOrders = () => {
             </button>
           ))}
         </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-10 pb-5">
-          {/* order Filter */}
           <div>
             <label className="input input-bordered flex items-center">
               <input
@@ -112,91 +130,79 @@ const AllOrders = () => {
               </svg>
             </label>
           </div>
-
-          <div className="flex justify-end">
-            {/* <Link to="/categoy">
-              <button className="addNewButton rounded px-10 py-2">
-                {" "}
-                <i class="fa-solid fa-plus"></i> Add New
-              </button>
-            </Link> */}
-          </div>
         </div>
-        <div className="overflow-x-auto shadow">
-          <table className="table w-full">
+
+        <div className="overflow-x-auto shadow" id="orderTableToPDF">
+          <table className="table w-full text-sm">
             <thead>
               <tr>
-                <th className="">Order Id</th>
-                <th className="">Invoice</th>
-                <th className="">Name</th>
-                <th className="">Phone Number</th>
-                <th className="">Date</th>
-                <th className="">Payment Status</th>
-                <th className="">Total</th>
-
-                <th className="">Status</th>
-                <th className="">Action</th>
+                <th>Order Id</th>
+                <th>Invoice</th>
+                <th>Name</th>
+                <th>Phone Number</th>
+                <th>Date</th>
+                <th>Payment Status</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Action</th>
               </tr>
             </thead>
-            {currentOrders?.map((order, index) => {
-              return (
-                <tbody key={index} className="text-sm">
-                  <tr>
-                    <td>{order.orderId}</td>
-                    {/* <td className="text-center">Shuvo</td> */}
-                    <td className="">{order.invNo}</td>
-                    <td className="">{order.customerName}</td>
-                    <td>{order.customerNumber}</td>
-                    <td>{order.createdAt}</td>
-                    <td>
-                      <p
-                        className={`text-center rounded-full ${
-                          order.productOrderMethod === "cashon"
-                            ? "border border-sky-300 bg-transparent bg-sky-50 text-sky-700"
-                            : "border border-green-300 bg-transparent bg-green-50 text-green-700"
-                        }`}
-                      >
-                        {order.productOrderMethod === "cashon"
-                          ? "Cash On"
-                          : "Online Pay"}
+            <tbody>
+              {currentOrders?.map((order, index) => (
+                <tr key={index}>
+                  <td>{order.orderId}</td>
+                  <td>{order.invNo}</td>
+                  <td>{order.customerName}</td>
+                  <td>{order.customerNumber}</td>
+                  <td>{order.createdAt}</td>
+                  <td>
+                    <p
+                      className={`text-center rounded-full ${
+                        order.productOrderMethod === "cashon"
+                          ? "border border-sky-300 bg-sky-50 text-sky-700"
+                          : "border border-green-300 bg-green-50 text-green-700"
+                      }`}
+                    >
+                      {order.productOrderMethod === "cashon" ? "Cash On" : "Online Pay"}
+                    </p>
+                  </td>
+                  <td className="font-semibold">{order.inTotal}</td>
+                  <td>
+                    <p
+                      className={`text-center rounded-full text-sm px-1 ${
+                        order.orderStatus === "Pending"
+                          ? "border border-amber-300 bg-amber-50 text-amber-700"
+                          : order.orderStatus === "Processing"
+                          ? "border border-blue-300 bg-blue-50 text-blue-700"
+                          : order.orderStatus === "Confirm"
+                          ? "border border-green-300 bg-blue-50 text-green-700"
+                          : order.orderStatus === "Delivered"
+                          ? "border border-purple-300 bg-green-50 text-purple-700"
+                          : order.orderStatus === "Cancelled"
+                          ? "border border-red-300 bg-red-50 text-red-700"
+                          : order.orderStatus === "Shipped"
+                          ? "border border-fuchsia-300 bg-red-50 text-fuchsia-700"
+                          : order.orderStatus === "Return"
+                          ? "border border-rose-300 bg-red-50 text-rose-700"
+                          : ""
+                      }`}
+                    >
+                      {order.orderStatus}
+                    </p>
+                  </td>
+                  <td>
+                    <Link to={`/orders/single/${order._id}`}>
+                      <p className="text-sm text-center border border-dashed px-2 shadow rounded-full border-green-300 bg-green-50 text-green-700 cursor-pointer">
+                        Details
                       </p>
-                    </td>
-                    <td className="font-semibold">{order.inTotal}</td>
-
-                    <td>
-                      {" "}
-                      <p
-                        className={`text-center rounded-full text-sm px-1 ${
-                          order.orderStatus === "Pending"
-                            ? "border border-amber-300 bg-transparent bg-amber-50 text-amber-700"
-                            : order.orderStatus === "Processing"
-                            ? "border border-blue-300 bg-blue-50 text-blue-700"
-                            : order.orderStatus === "Confirm"
-                            ? "border border-green-300 bg-blue-50 text-green-700"
-                            : order.orderStatus === "Delivered"
-                            ? "border border-green-300 bg-green-50 text-green-700"
-                            : order.orderStatus === "Cancelled"
-                            ? "border border-red-300 bg-red-50 text-red-700"
-                            : ""
-                        }`}
-                      >
-                        {" "}
-                        {order.orderStatus}{" "}
-                      </p>{" "}
-                    </td>
-                    <td>
-                      <Link to={`/orders/single/${order._id}`}>
-                        <p className="text-sm text-center border border-dashed px-2 shadow rounded-full border-green-300 bg-transparent bg-green-50 text-green-700 cursor-pointer">
-                          Details
-                        </p>
-                      </Link>{" "}
-                    </td>
-                  </tr>
-                </tbody>
-              );
-            })}
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
+
         <Pagination
           totalPosts={filteredOrders.length}
           postsPerPage={postsPerPage}
@@ -204,8 +210,6 @@ const AllOrders = () => {
           currentPage={currentPage}
         />
       </div>
-
-      <div></div>
     </div>
   );
 };

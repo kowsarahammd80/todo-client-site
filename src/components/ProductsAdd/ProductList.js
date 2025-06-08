@@ -54,7 +54,7 @@ const ProductList = () => {
               </label>
             </div>
             <div className="flex justify-end">
-              <Link to="/addSubCategory">
+              <Link to="/productsAdd">
                 <button className="addNewButton rounded px-10 py-2">
                   {" "}
                   <i class="fa-solid fa-plus"></i> Add New
