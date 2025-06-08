@@ -27,7 +27,9 @@ const AllOrders = () => {
       (filterStatus === "Prosessing Order" &&
         order.orderStatus === "Processing") ||
       (filterStatus === "Onthe away" && order.orderStatus === "Onthe away") ||
-      (filterStatus === "Return" && order.orderStatus === "Return");
+      (filterStatus === "Return" && order.orderStatus === "Return") ||
+      (filterStatus === "Delivered" && order.orderStatus === "delivered") ||
+      (filterStatus === "Cancelled" && order.orderStatus === "Cancelled");
 
     return matchesSearch && matchesStatus;
   });
@@ -45,7 +47,9 @@ const AllOrders = () => {
     "Pending Order",
     "Prosessing Order",
     "Onthe away",
+    "Delivered",
     "Return",
+    "Cancelled"
   ];
   useEffect(() => {
     setCurrentPage(1);
@@ -165,6 +169,14 @@ const AllOrders = () => {
                         className={`text-center rounded-full text-sm px-1 ${
                           order.orderStatus === "Pending"
                             ? "border border-amber-300 bg-transparent bg-amber-50 text-amber-700"
+                            : order.orderStatus === "Processing"
+                            ? "border border-blue-300 bg-blue-50 text-blue-700"
+                            : order.orderStatus === "Confirm"
+                            ? "border border-green-300 bg-blue-50 text-green-700"
+                            : order.orderStatus === "Delivered"
+                            ? "border border-green-300 bg-green-50 text-green-700"
+                            : order.orderStatus === "Cancelled"
+                            ? "border border-red-300 bg-red-50 text-red-700"
                             : ""
                         }`}
                       >

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./ProductsAdd.css";
 import useCatagory from "../../hooks/useCatagory";
-import useSubCategoryAll from "../../hooks/useSubCategoryAll";
+// import useSubCategoryAll from "../../hooks/useSubCategoryAll";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
@@ -10,7 +10,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 // import parse from "html-react-parser"
 
 const ProductsUp = () => {
-  const [subCategories] = useSubCategoryAll();
+  // const [subCategories] = useSubCategoryAll();
   const [categories, loading] = useCatagory();
   const [selectedImages, setSelectedImages] = useState([]);
   // const [sizes, setSizes] = useState([{ size: "", price: "", discount: "" }]);
@@ -22,7 +22,7 @@ const ProductsUp = () => {
     brandName: "",
     price: "",
     discountNumber: "",
-    sizes: [""], // Array of sizes
+    sizes: [""],
     categoryName: "",
     categoryId: "",
     description: "",
@@ -58,10 +58,6 @@ const ProductsUp = () => {
     const previews = files.map((file) => URL.createObjectURL(file));
     setPreviewUrls(previews);
   };
-
-  // const handleImageChange = (event) => {
-  //     setSelectedImages([...event.target.files]);
-  // };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -125,11 +121,6 @@ const ProductsUp = () => {
         imageUrls.push(response.data.data.url);
       });
 
-      // Prepare data to send to your backend
-      // const dataToSend = {
-      //   ...formData,
-      //   images: imageUrls, // Include uploaded image URLs
-      // };
       const dataToSend = {
         name: formData.name,
         brandName: formData.brandName,
@@ -148,7 +139,7 @@ const ProductsUp = () => {
         // subCategoryIdNum: formData.subCategoriesId,
         productShowStatus: formData.productStatus,
         stockStatus: formData.productStockStatus,
-        colorsData: colors
+        colorsData: colors,
       };
 
       // console.log(dataToSend)
@@ -163,7 +154,28 @@ const ProductsUp = () => {
         // Handle error response
         toast.error("Failed to post product data.");
       }
-      form.reset("");
+      setFormData({
+        name: "",
+        brandName: "",
+        price: "",
+        discountNumber: "",
+        sizes: [""],
+        categoryName: "",
+        categoryId: "",
+        description: "",
+        youtubeLink: "",
+        facebookLink: "",
+        offers: "",
+        offerNames: "",
+        productShowStatus: "",
+        stockStatus: "",
+      });
+
+      setSizes([""]);
+      setText("");
+      setSelectedImages([]);
+      setColors([]);
+      form.reset();
     } catch (error) {
       setUploadStatus("Upload failed. Please try again.");
       console.error(error);
@@ -325,13 +337,7 @@ const ProductsUp = () => {
                 <p className="text-sm mb-3 font-semibold">
                   Description <span className="text-orange-400">*</span>
                 </p>
-                {/* <textarea
-                  name="description"
-                  className="textarea textarea-bordered w-full h-96"
-                  placeholder="Product Discription"
-                  onChange={handleInputChange}
-                  required
-                ></textarea> */}
+
                 <div>
                   <CKEditor
                     onReady={(editor) => {
@@ -374,8 +380,6 @@ const ProductsUp = () => {
                     }}
                   />
                 </div>
-                {/* <p>ck text</p>
-                 <p>{parse(text)}</p> */}
               </div>
             </div>
             {/* image up side */}
@@ -426,43 +430,6 @@ const ProductsUp = () => {
                   Add Size <span className="text-orange-400">*</span>
                 </p>
                 <div className="grid grid-cols-2 gap-4">
-                  {/* {sizes.map((size, index) => (
-                    <div key={index}>
-                      <label>Size:</label>
-                      <input
-                        name="size"
-                        value={size.size}
-                        onChange={(e) => handleSizeChange(index, e)}
-                        required
-                      ></input>
-
-                      <label>Price:</label>
-                      <input
-                        type="number"
-                        name="price"
-                        value={size.price}
-                        onChange={(e) => handleSizeChange(index, e)}
-                        required
-                      />
-
-                      <label>Discount:</label>
-                      <input
-                        type="number"
-                        name="discount"
-                        value={size.discount}
-                        onChange={(e) => handleSizeChange(index, e)}
-                        required
-                      />
-
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveSize(index)}
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  ))} */}
-
                   {sizes.map((size, index) => (
                     <div className="flex items-center my-2" key={index}>
                       <input
@@ -494,7 +461,9 @@ const ProductsUp = () => {
                 </div>
               </div>
               <div className="py-4">
-                <h3 className="text-sm font-semibold mb-2">Dynamic Color Inputs</h3>
+                <h3 className="text-sm font-semibold mb-2">
+                  Dynamic Color Inputs
+                </h3>
                 {colors.map((color, index) => (
                   <div key={index} className="flex gap-4">
                     <input
@@ -503,7 +472,7 @@ const ProductsUp = () => {
                       placeholder="Color Name"
                       value={color.name}
                       onChange={(event) => handleColorInputChange(index, event)}
-                       className="text-sm input input-bordered w-full my-1"
+                      className="text-sm input input-bordered w-full my-1"
                     />
                     <input
                       type="text"
@@ -513,12 +482,24 @@ const ProductsUp = () => {
                       onChange={(event) => handleColorInputChange(index, event)}
                       className="text-sm input input-bordered w-full my-1"
                     />
-                    <button type="button" className="" onClick={() => removeColorField(index)}>X</button>
+                    <button
+                      type="button"
+                      className=""
+                      onClick={() => removeColorField(index)}
+                    >
+                      X
+                    </button>
                   </div>
                 ))}
-               <div className="flex justify-center py-4">
-               <button type="button" className=" text-sm rounded text-white addProductsAllButton px-3 font-thin py-1" onClick={addColorField}>Add More Color +</button>
-               </div>
+                <div className="flex justify-center py-4">
+                  <button
+                    type="button"
+                    className=" text-sm rounded text-white addProductsAllButton px-3 font-thin py-1"
+                    onClick={addColorField}
+                  >
+                    Add More Color +
+                  </button>
+                </div>
               </div>
               <div className="mb-4">
                 <p className="text-sm font-semibold mb-3">
@@ -557,26 +538,18 @@ const ProductsUp = () => {
                     placeholder="Minimum pirce"
                     className="text-sm input input-bordered w-full"
                   /> */}
-                   <select
+                  <select
                     name="offer"
                     className="select select-bordered w-full "
                     // value={formData.subCategoriesName}
                     onChange={handleInputChange}
-                    
                   >
-                    <option value="" >Select Deals</option>
+                    <option value="">Select Deals</option>
 
                     <option value="hot">Hot Deals</option>
                     <option value="treanding">Trending deals</option>
                   </select>
 
-                  {/* <input
-                    type="Text"
-                    name="offer"
-                    placeholder="Only Type Here Offer (Offer)"
-                    className="text-sm input input-bordered w-full"
-                    onChange={handleInputChange}
-                  /> */}
                   <input
                     type="text"
                     name="offerName"
@@ -604,7 +577,7 @@ const ProductsUp = () => {
                     className="text-sm input input-bordered w-full"
                     onChange={handleInputChange}
                   />
-                  
+
                   <input
                     type="text"
                     name="facebookLink"
