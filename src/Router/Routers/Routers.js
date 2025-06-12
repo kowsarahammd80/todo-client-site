@@ -18,6 +18,8 @@ import OrderMain from '../../LayOut/OrderMain/OrderMain';
 import AllOrders from '../../components/AllOrders/AllOrders';
 import SingleOrder from '../../components/SingleOrder/SingleOrder';
 import ShippingCost from '../../components/ShippingCost/ShippingCost';
+import ShippingCostList from '../../components/ShippingCost/ShippingCostList';
+import ShippingUpdate from '../../components/ShippingCost/ShippingUpdate';
 
 
 
@@ -87,6 +89,14 @@ const router = createBrowserRouter([
             {
                 path: '/shipping-cost',
                 element: <ShippingCost/>
+            },
+            {
+               path:'/shipping-List',
+               element: <ShippingCostList/>
+            },
+            {
+               path:'/shipping-List/:id',
+               element: <ShippingUpdate/>
             },
             {
                 path: '/orders',

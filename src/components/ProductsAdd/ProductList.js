@@ -69,7 +69,7 @@ const ProductList = () => {
                 <tr>
                   <th className="">Product</th>
                   <th className="text-center">Category</th>
-                  <th className="text-center">Create Date</th>
+                  {/* <th className="text-center">Create Date</th> */}
                   
                   <th className="text-center">Action</th>
                 </tr>
@@ -94,16 +94,16 @@ const ProductList = () => {
                       </div>
                     </td>
                     <td className="text-center">{product.categoryName}</td>
-                    <td className="text-center">{product.date} <span className="font-semibold">&</span> {product.time}</td>
+                    {/* <td className="text-center">{product.date} <span className="font-semibold">&</span> {product.time}</td> */}
                     
                     <th>
                       <div className="text-center">
-                        <button className="categoryEyeButton px-4 py-1 rounded shadow text-lg">
+                        {/* <button className="categoryEyeButton px-4 py-1 rounded shadow text-lg">
                           {" "}
                           <span>
                             <i class="fa-regular fa-eye"></i>
                           </span>{" "}
-                        </button>
+                        </button> */}
                        <Link to={`/productsList/${product._id}`}>
                        <button className="categoryPenButton px-4 py-1 rounded shadow text-lg ">
                           <i class="fa-solid fa-pen"></i>

@@ -153,9 +153,9 @@ const Navbar = () => {
                   </li>
                 </Link>
 
-                <li>
+                {/* <li>
                   <a>Order Take</a>
-                </li>
+                </li> */}
               </ul>
             </div>
           </li>
@@ -218,7 +218,7 @@ const Navbar = () => {
                     <a>Shipping Cost Add</a>
                   </li>
                 </Link>
-                <Link to="/">
+                <Link to="/shipping-List">
                   <li>
                     <a>Shipping Cost List</a>
                   </li>
