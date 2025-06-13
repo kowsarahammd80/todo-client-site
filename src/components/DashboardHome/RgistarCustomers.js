@@ -10,7 +10,7 @@ const RgistarCustomers = () => {
           <i class="fa-solid fa-users text-4xl text-gray-700"></i>
         </div>
         <div className="text-end">
-          <p className="pb-2 text-2xl text-gray-700">{registecustomers.length}</p>
+          <p className="pb-2 text-2xl text-gray-700">{registecustomers?.length}</p>
           <p className="text-gray-500 text-sm">Register Customers</p>
         </div>
       </div>

@@ -3,7 +3,12 @@ import { Link } from "react-router-dom";
 import useAllOrderList from "../../hooks/useAllOrderList";
 
 const LatestOrderDash = () => {
-    const [allOrderList] = useAllOrderList()
+    const [allOrderList, loading] = useAllOrderList()
+    if(loading){
+      return <div className="flex justify-center items-center h-screen">
+        loading...
+      </div>
+    }
   return (
     <div>
       <div className="pb-5 pt-5 flex justify-between items-center">

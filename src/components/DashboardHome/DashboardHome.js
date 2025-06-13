@@ -4,6 +4,7 @@ import TotalProduct from "./TotalProduct";
 import TodayOrder from "./TodayOrder";
 import RgistarCustomers from "./RgistarCustomers";
 import LatestOrderDash from "./LatestOrderDash";
+import TotalRegistarCustomerList from "./TotalRegistarCustomerList";
 
 
 const DashboardHome = () => {
@@ -20,9 +21,12 @@ const DashboardHome = () => {
         <RgistarCustomers/>
       </div>
        {/* list */}
-       <section className="grid grid-cols-2">
+       <section className="grid grid-cols-2 gap-5">
          <div>
           <LatestOrderDash/>
+         </div>
+         <div>
+           <TotalRegistarCustomerList/>
          </div>
        </section>
     </div>

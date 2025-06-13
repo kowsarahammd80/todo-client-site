@@ -10,7 +10,7 @@ const TotalProduct = () => {
               <i class="fa-solid fa-database text-4xl text-gray-700"></i>
             </div>
             <div className="text-end">
-              <p className="pb-2 text-2xl text-gray-700">{products.length}</p>
+              <p className="pb-2 text-2xl text-gray-700">{products?.length ? products?.length : 0}</p>
               <p className="text-gray-500 text-sm">Total Product</p>
             </div>
           </div>

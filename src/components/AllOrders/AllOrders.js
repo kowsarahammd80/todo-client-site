@@ -80,7 +80,7 @@ const AllOrders = () => {
     <div>
       <div className="pb-5 pt-5 flex justify-between items-center">
         <p className="text-xl font-semibold">
-          <span>{filterStatus}</span> List <span>({filteredOrders.length})</span>
+          <span>{filterStatus}</span> List <span>({filteredOrders?.length})</span>
         </p>
         <button
           onClick={downloadPDF}

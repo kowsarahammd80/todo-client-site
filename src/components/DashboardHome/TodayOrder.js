@@ -10,7 +10,7 @@ const TodayOrder = () => {
           <i class="fa-solid fa-bag-shopping text-4xl text-gray-700"></i>
         </div>
         <div className="text-end">
-          <p className="pb-2 text-2xl text-gray-700">{todaysOrder.length}</p>
+          <p className="pb-2 text-2xl text-gray-700">{todaysOrder?.length ? todaysOrder?.length : 0}</p>
           <p className="text-gray-500 text-sm">Today's Order</p>
         </div>
       </div>
