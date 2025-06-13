@@ -3,11 +3,13 @@ import TotalOrder from "./TotalOrder";
 import TotalProduct from "./TotalProduct";
 import TodayOrder from "./TodayOrder";
 import RgistarCustomers from "./RgistarCustomers";
+import LatestOrderDash from "./LatestOrderDash";
+
 
 const DashboardHome = () => {
   return (
     <div className="w-full pt-10">
-      <div className="grid grid-cols-4 gap-5">
+      <div className="grid grid-cols-4 gap-5 py-5">
         {/* total order */}
         <TotalOrder/>
         {/* today order */}
@@ -17,6 +19,12 @@ const DashboardHome = () => {
         {/* total register client */}
         <RgistarCustomers/>
       </div>
+       {/* list */}
+       <section className="grid grid-cols-2">
+         <div>
+          <LatestOrderDash/>
+         </div>
+       </section>
     </div>
   );
 };
