@@ -31,7 +31,7 @@ const ShippingCostList = () => {
       <div className="card p-5 shadow-xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-10 pb-5">
           <div>
-            <label className="input input-bordered flex items-center">
+            {/* <label className="input input-bordered flex items-center">
               <input type="text" className="grow" placeholder="Search" />
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +45,7 @@ const ShippingCostList = () => {
                   clipRule="evenodd"
                 />
               </svg>
-            </label>
+            </label> */}
           </div>
 
           <div className="flex justify-end">

@@ -3,14 +3,18 @@ import "./Catagoris.css";
 import { Link } from "react-router-dom";
 import useCatagory from "../../hooks/useCatagory";
 import Pagination from "../Pagination/Pagination";
-// import { useDispatch, useSelector } from "react-redux";
-// import { fetchCategories } from "../../Features/categorySlice";
+
 
 const CategoriesList = () => {
   const [categories, loading, refetchData] = useCatagory();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(10);
+    const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredProduct = categories.filter((items) =>
+    items.name?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   // const imageHostKey = process.env.REACT_APP_image_key;
 
@@ -33,7 +37,7 @@ const CategoriesList = () => {
 
   const lastPostIndex = currentPage * postsPerPage;
   const firstPostIndex = lastPostIndex - postsPerPage;
-  const categoryDatas = categories.slice(firstPostIndex, lastPostIndex);
+  const categoryDatas = filteredProduct.slice(firstPostIndex, lastPostIndex);
 
   return (
     <div>
@@ -44,7 +48,8 @@ const CategoriesList = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-10 pb-5">
           <div>
             <label className="input input-bordered flex items-center">
-              <input type="text" className="grow" placeholder="Search" />
+              <input type="text" className="grow" placeholder="Search"   value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}/>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 16 16"
