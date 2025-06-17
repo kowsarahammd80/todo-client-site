@@ -58,7 +58,6 @@ const TotalRegistarCustomerList = () => {
             </table>
           </div>
 
-         
         </div>
       </div>
     </div>

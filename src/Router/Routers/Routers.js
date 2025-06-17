@@ -20,6 +20,8 @@ import SingleOrder from '../../components/SingleOrder/SingleOrder';
 import ShippingCost from '../../components/ShippingCost/ShippingCost';
 import ShippingCostList from '../../components/ShippingCost/ShippingCostList';
 import ShippingUpdate from '../../components/ShippingCost/ShippingUpdate';
+import CustomerList from '../../components/CustomerLIst/CustomerList';
+// import CustomerList from '../../components/CustomerLIst/CustomerList';
 
 
 
@@ -97,6 +99,10 @@ const router = createBrowserRouter([
             {
                path:'/shipping-List/:id',
                element: <ShippingUpdate/>
+            },
+            {
+              path: '/customer-list',
+            element: <CustomerList/>
             },
             {
                 path: '/orders',

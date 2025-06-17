@@ -226,6 +226,40 @@ const Navbar = () => {
               </ul>
             </div>
           </li>
+          {/* shipping */}
+          <li className="my-4 py-3 px-2 w-full">
+            {" "}
+            <div className="dropdown w-full">
+              <div tabIndex={0} role="button" className="">
+                {" "}
+                <div className="flex items-center justify-between text-sm w-full">
+                  <p className="me-4">
+                    <i class="fa-solid fa-users"></i>
+                  </p>
+                  <p>User</p>
+
+                  <p className="">
+                    <i class="fa-solid ms-10 fa-angle-down"></i>
+                  </p>
+                </div>{" "}
+              </div>
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu bg-slate-800 rounded-box z-[1] text-sm w-52 shadow"
+              >
+                <Link to="/customer-list">
+                  <li>
+                    <a>Customer List</a>
+                  </li>
+                </Link>
+                <Link to="">
+                  <li>
+                    <a>Shipping Cost List</a>
+                  </li>
+                </Link>
+              </ul>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
