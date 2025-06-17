@@ -25,7 +25,7 @@ const ProductDataUpdate = () => {
   const [colors, setColors] = useState([{ colorName: "", colorCode: "" }]);
   const imageHostKey = process.env.REACT_APP_image_key;
 
-  const descriptions = text || idByProductData.description;
+  // const descriptions = text || idByProductData.description;
 
   const [formData, setFormData] = useState({
     name: "",
@@ -69,6 +69,7 @@ const ProductDataUpdate = () => {
         images: idByProductData.images || [], // Existing images
       }));
     }
+    setText(idByProductData.description || "");
   }, [idByProductData]);
 
   const handleInputChange = (event) => {
@@ -161,7 +162,7 @@ const ProductDataUpdate = () => {
       }
 
       // Prepare data to send to backend
-      const dataToSend = { ...formData, images: imageUrls };
+      const dataToSend = { ...formData, images: imageUrls, description: text || formData.description, };
 
       // Send update request
       await axios.patch(
@@ -388,10 +389,10 @@ const ProductDataUpdate = () => {
                   </div>
                   {/* <p>ck text</p>
                      <p>{parse(text)}</p> */}
-                  <div
+                  {/* <div
                     dangerouslySetInnerHTML={{ __html: formData.description }}
                   />
-                  {descriptions}
+                  {descriptions} */}
                 </div>
               </div>
               {/* image up side */}
