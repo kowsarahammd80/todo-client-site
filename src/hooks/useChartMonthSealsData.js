@@ -1,29 +1,24 @@
 import React, { useEffect, useState } from 'react';
 
-const useChartDataDaywise = () => {
-  const [chartDatadaywise, setChartDatadaywise] = useState(null);
+const useChartMonthSealsData = () => {
+   const [chartDataMonthwise, setChartDataMonthwise] = useState(null);
 
   useEffect(() => {
-    const fetchSalesData = async () => {
+    const fetchMonthlySales = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/orders/day-wise-sales");
+        const response = await fetch("http://localhost:5000/api/orders/month-wise-sales");
         const resData = await response.json();
 
-        const data = Array.isArray(resData) ? resData : [];
+        const valid = resData.filter(item => item._id && item.totalSales > 0);
 
-        const dates = data
-          .filter(item => item._id)
-          .map(item => item._id);
+        const months = valid.map(item => item._id); // like "2025-06"
+        const totals = valid.map(item => item.totalSales);
 
-        const totals = data
-          .filter(item => item._id)
-          .map(item => item.totalSales);
-
-       setChartDatadaywise({
-          labels: dates,
+         setChartDataMonthwise({
+          labels: months,
           datasets: [
             {
-              label: "💰 day Total Sales",
+              label: "💰 Monlthy Total Sales",
               data: totals,
               backgroundColor: [
                 "#4dc9f6",
@@ -45,15 +40,15 @@ const useChartDataDaywise = () => {
             },
           ],
         });
-      } catch (error) {
-        console.error("Failed to load sales data", error);
+      } catch (err) {
+        console.error("Monthly sales fetch failed", err);
       }
     };
 
-    fetchSalesData();
+    fetchMonthlySales();
   }, []);
 
-  return {chartDatadaywise};
+  return { chartDataMonthwise };
 };
 
-export default useChartDataDaywise;
+export default useChartMonthSealsData;
