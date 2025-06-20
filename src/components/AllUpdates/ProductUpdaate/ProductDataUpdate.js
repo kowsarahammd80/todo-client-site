@@ -66,7 +66,7 @@ const ProductDataUpdate = () => {
         productShowStatus: idByProductData.productShowStatus || "",
         stockStatus: idByProductData.stockStatus || "",
         colorsData: idByProductData.colorsData || [],
-        images: idByProductData.images || [], // Existing images
+        images: idByProductData.images || [], 
       }));
     }
     setText(idByProductData.description || "");
@@ -143,11 +143,10 @@ const ProductDataUpdate = () => {
     event.preventDefault();
     setUploadStatus("Uploading...");
 
-    let imageUrls = [...formData.images]; // Use existing images if no new images are uploaded
+    let imageUrls = [...formData.images];
 
     try {
       if (selectedImages.length > 0) {
-        // Upload new images to ImageBB
         const imageUploadPromises = selectedImages.map((image) => {
           const imageData = new FormData();
           imageData.append("image", image);
@@ -161,10 +160,8 @@ const ProductDataUpdate = () => {
         imageUrls = imageResponses.map((response) => response.data.data.url);
       }
 
-      // Prepare data to send to backend
       const dataToSend = { ...formData, images: imageUrls, description: text || formData.description, };
 
-      // Send update request
       await axios.patch(
         `http://localhost:5000/api/products/${idByProductData._id}`,
         dataToSend

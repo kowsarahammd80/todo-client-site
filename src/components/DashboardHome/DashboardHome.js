@@ -5,6 +5,8 @@ import TodayOrder from "./TodayOrder";
 import RgistarCustomers from "./RgistarCustomers";
 import LatestOrderDash from "./LatestOrderDash";
 import TotalRegistarCustomerList from "./TotalRegistarCustomerList";
+import ChatDaywise from "./ChatDaywise";
+// import ChatDaywise from "./ChatDaywise";
 
 
 const DashboardHome = () => {
@@ -29,6 +31,8 @@ const DashboardHome = () => {
            <TotalRegistarCustomerList/>
          </div>
        </section>
+       {/* <ChatDaywise/> */}
+       <ChatDaywise/>
     </div>
   );
 };
