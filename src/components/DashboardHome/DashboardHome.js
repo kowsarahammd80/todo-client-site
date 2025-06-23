@@ -7,6 +7,7 @@ import LatestOrderDash from "./LatestOrderDash";
 import TotalRegistarCustomerList from "./TotalRegistarCustomerList";
 import ChatDaywise from "./ChatDaywise";
 import ChatMonthWise from "./ChatMonthWise";
+import ChatWeeklyWiseData from "./ChatWeeklyWiseData";
 // import ChatDaywise from "./ChatDaywise";
 
 const DashboardHome = () => {
@@ -30,14 +31,21 @@ const DashboardHome = () => {
             <select
               defaultValue="day"
               className="select"
-              onChange={(e) => setChart(e.target.value)} // 👈 add this line
+              onChange={(e) => setChart(e.target.value)} 
             >
               <option disabled>Pick a chart</option>
               <option value="day">Day Wise</option>
-              <option value="month">Month Wise</option>
+              <option value="week">Weekly Wise</option>
+              <option value="month">Monthly Wise</option>
             </select>
           </div>
-          {chart === "day" ? <ChatDaywise /> : <ChatMonthWise />}
+          {chart === "day" && <ChatDaywise />} 
+          {
+            chart === "month" && <ChatMonthWise />
+          }
+          {
+            chart === "week" && <ChatWeeklyWiseData />
+          }
         </div>
       </div>
       {/* list */}
@@ -49,8 +57,7 @@ const DashboardHome = () => {
           <TotalRegistarCustomerList />
         </div>
       </section>
-      {/* <ChatDaywise/> */}
-      {/* <ChatDaywise/> */}
+     
     </div>
   );
 };
